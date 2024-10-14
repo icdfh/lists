@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive App Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .apps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .app {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            width: 250px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .app:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            background: #fff;
+            color: #2575fc;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+        button:hover {
+            background: #2575fc;
+            color: #fff;
+        }
+        #confirmation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4caf50;
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: left;
+            position: relative;
+        }
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .criteria-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            color: #2575fc;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .criteria-button:hover {
+            background: #2575fc;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Interactive App Collection!</h1>
+        <button class="criteria-button" onclick="showCriteriaModal()">Критерии оценивания</button>
+        <div class="apps">
+            <div class="app" id="todo">
+                <h3>To-Do List Application</h3>
+                <button onclick="showModal('To-Do List Application', 'Приложение для управления задачами, которое позволяет добавлять, удалять и отмечать задачи как выполненные. Данные хранятся локально с использованием localStorage. Примерный дизайн: Простой, с использованием карточек для задач. Основные функции: добавление, удаление задач, отметка как выполненное, сохранение данных в localStorage.')">Choose</button>
+            </div>
+            <div class="app" id="calculator">
+                <h3>JavaScript Calculator</h3>
+                <button onclick="showModal('JavaScript Calculator', 'Функциональный калькулятор с базовыми арифметическими операциями, включая работу с дробями и отрицательными числами. Примерный дизайн: Минималистичный, с большими кнопками для каждой операции. Основные функции: сложение, вычитание, умножение, деление, работа с дробями.')">Choose</button>
+            </div>
+            <div class="app" id="tictactoe">
+                <h3>Tic Tac Toe Game</h3>
+                <button onclick="showModal('Tic Tac Toe Game', 'Полностью интерактивная игра крестики-нолики с возможностью игры против компьютера или другого игрока. Примерный дизайн: Игровое поле 3x3, простые кнопки для каждого хода. Основные функции: игра для одного или двух игроков, отображение результатов.')">Choose</button>
+            </div>
+            <div class="app" id="expense_tracker">
+                <h3>Expense Tracker</h3>
+                <button onclick="showModal('Expense Tracker', 'Приложение для отслеживания личных финансов с возможностью ввода категорий расходов, сумм и использования графиков для отображения данных. Примерный дизайн: Панель управления с графиками и списками расходов. Основные функции: добавление, удаление расходов, отображение данных в виде графиков.')">Choose</button>
+            </div>
+            <div class="app" id="currency_converter">
+                <h3>Currency Converter</h3>
+                <button onclick="showModal('Currency Converter', 'Приложение для конвертации валют с использованием актуальных курсов валют через API. Примерный дизайн: Простой интерфейс с полями ввода для суммы и выбора валют. Основные функции: ввод суммы, выбор валюты, конвертация в реальном времени.')">Choose</button>
+            </div>
+            <div class="app" id="chat_app">
+                <h3>Chat Application</h3>
+                <button onclick="showModal('Chat Application', 'Простое чат-приложение с использованием WebSockets для обмена сообщениями в реальном времени. Примерный дизайн: Окно чата с сообщениями и полем ввода. Основные функции: отправка и получение сообщений в реальном времени.')">Choose</button>
+            </div>
+            <div class="app" id="image_gallery">
+                <h3>Image Gallery with Filters</h3>
+                <button onclick="showModal('Image Gallery with Filters', 'Приложение для загрузки и отображения изображений с возможностью применения различных фильтров. Примерный дизайн: Сетка изображений с фильтрами. Основные функции: загрузка изображений, применение фильтров, сортировка.')">Choose</button>
+            </div>
+            <div class="app" id="guess_number">
+                <h3>Guess the Number Game</h3>
+                <button onclick="showModal('Guess the Number Game', 'Игра, где пользователю нужно угадать случайное число в определенном диапазоне. Примерный дизайн: Поле для ввода числа и подсказки. Основные функции: ввод числа, проверка правильности, подсказки.')">Choose</button>
+            </div>
+            <div class="app" id="interactive_table">
+                <h3>Interactive Data Table</h3>
+                <button onclick="showModal('Interactive Data Table', 'Приложение для отображения таблиц с возможностью сортировки, фильтрации и поиска данных. Примерный дизайн: Таблица с кнопками сортировки и полем для поиска. Основные функции: сортировка, фильтрация, поиск.')">Choose</button>
+            </div>
+            <div class="app" id="password_generator">
+                <h3>Password Generator</h3>
+                <button onclick="showModal('Password Generator', 'Приложение для генерации паролей с возможностью выбора длины и сложности. Примерный дизайн: Поля для выбора длины и сложности пароля, кнопка генерации. Основные функции: генерация пароля, выбор параметров.')">Choose</button>
+            </div>
+            <div class="app" id="notes_app">
+                <h3>Notes Application</h3>
+                <button onclick="showModal('Notes Application', 'Приложение для создания, редактирования и удаления заметок с локальным хранением данных. Примерный дизайн: Список заметок с возможностью добавления и редактирования. Основные функции: создание, редактирование, удаление заметок.')">Choose</button>
+            </div>
+            <div class="app" id="weather_app">
+                <h3>Weather Application</h3>
+                <button onclick="showModal('Weather Application', 'Приложение для отображения текущей погоды по введенному пользователем городу с использованием API. Примерный дизайн: Поле для ввода города и отображение данных о погоде. Основные функции: ввод города, отображение текущей погоды.')">Choose</button>
+            </div>
+            <div class="app" id="snake_game">
+                <h3>Snake Game</h3>
+                <button onclick="showModal('Snake Game', 'Классическая игра "Змейка" с увеличением длины при поедании пищи. Примерный дизайн: Простое игровое поле с графическим изображением змейки и пищи. Основные функции: управление змейкой, подсчет очков.')">Choose</button>
+            </div>
+            <div class="app" id="countdown_timer">
+                <h3>Countdown Timer</h3>
+                <button onclick="showModal('Countdown Timer', 'Таймер, который можно настроить на определенное время для обратного отсчета. Примерный дизайн: Простое поле ввода для времени и кнопка старта. Основные функции: настройка времени, обратный отсчет, звуковое уведомление.')">Choose</button>
+            </div>
+            <div class="app" id="time_tracker">
+                <h3>Time Tracking Application</h3>
+                <button onclick="showModal('Time Tracking Application', 'Приложение для отслеживания рабочего времени по задачам. Примерный дизайн: Таблица с задачами и временем, затраченным на каждую из них. Основные функции: добавление задач, отслеживание времени, отчет о проделанной работе.')">Choose</button>
+            </div>
+            <div class="app" id="user_registration">
+                <h3>User Registration Form</h3>
+                <button onclick="showModal('User Registration Form', 'Форма регистрации с валидацией данных на клиентской стороне. Примерный дизайн: Поля для ввода информации о пользователе и кнопка регистрации. Основные функции: валидация данных, отправка формы.')">Choose</button>
+            </div>
+            <div class="app" id="interactive_map">
+                <h3>Interactive Map with Markers</h3>
+                <button onclick="showModal('Interactive Map with Markers', 'Интерактивная карта с добавлением маркеров на основе введенных данных. Примерный дизайн: Карта с возможностью добавления и перемещения маркеров. Основные функции: добавление маркеров, просмотр информации о каждом маркере.')">Choose</button>
+            </div>
+            <div class="app" id="movie_search">
+                <h3>Movie Search Application</h3>
+                <button onclick="showModal('Movie Search Application', 'Приложение для поиска фильмов с отображением постеров и краткой информации. Примерный дизайн: Поле для поиска фильмов и список результатов с постерами. Основные функции: поиск фильмов, отображение информации.')">Choose</button>
+            </div>
+            <div class="app" id="shopping_list">
+                <h3>Shopping List Application</h3>
+                <button onclick="showModal('Shopping List Application', 'Приложение для добавления, удаления и отметки покупок как выполненных. Примерный дизайн: Список покупок с возможностью отметки выполнения. Основные функции: добавление, удаление покупок, отметка выполнения.')">Choose</button>
+            </div>
+            <div class="app" id="water_tracker">
+                <h3>Water Consumption Tracker</h3>
+                <button onclick="showModal('Water Consumption Tracker', 'Приложение для отслеживания уровня потребления воды с отображением данных в виде диаграмм. Примерный дизайн: Таблица потребления воды и график. Основные функции: добавление данных, отображение потребления в виде графика.')">Choose</button>
+            </div>
+            <div class="app" id="rss_reader">
+                <h3>RSS Feed Reader</h3>
+                <button onclick="showModal('RSS Feed Reader', 'Приложение для чтения RSS-лент с отображением новостей и статей. Примерный дизайн: Список новостей с кратким описанием. Основные функции: добавление RSS-лент, чтение новостей.')">Choose</button>
+            </div>
+            <div class="app" id="wikipedia_search">
+                <h3>Wikipedia Search Application</h3>
+                <button onclick="showModal('Wikipedia Search Application', 'Приложение для поиска статей по запросу пользователя с отображением краткой информации. Примерный дизайн: Поле для поиска и список найденных статей. Основные функции: поиск, отображение краткой информации.')">Choose</button>
+            </div>
+            <div class="app" id="quiz_game">
+                <h3>Quiz Game</h3>
+                <button onclick="showModal('Quiz Game', 'Викторина с вопросами и вариантами ответов, подсчет правильных ответов. Примерный дизайн: Вопросы с несколькими вариантами ответов и подсчет баллов. Основные функции: выбор ответа, подсчет результатов.')">Choose</button>
+            </div>
+            <div class="app" id="voting_system">
+                <h3>Project Voting System</h3>
+                <button onclick="showModal('Project Voting System', 'Система для голосования за различные проекты с отображением результатов в реальном времени. Примерный дизайн: Список проектов с возможностью проголосовать. Основные функции: голосование, отображение результатов.')">Choose</button>
+            </div>
+            <div class="app" id="ebook_reader">
+                <h3>eBook Reader</h3>
+                <button onclick="showModal('eBook Reader', 'Приложение для чтения книг с возможностью добавления закладок и заметок. Примерный дизайн: Окно чтения книги с кнопками для добавления заметок и закладок. Основные функции: чтение книг, добавление заметок, закладок.')">Choose</button>
+            </div>
+            <div class="app" id="reminder_app">
+                <h3>Reminder Application</h3>
+                <button onclick="showModal('Reminder Application', 'Приложение для создания напоминаний с указанием времени и даты. Примерный дизайн: Поле для ввода напоминания и времени, кнопка для сохранения. Основные функции: создание напоминания, уведомление.')">Choose</button>
+            </div>
+            <div class="app" id="feedback_form">
+                <h3>Feedback Form with Validation</h3>
+                <button onclick="showModal('Feedback Form with Validation', 'Форма обратной связи с валидацией введенных данных. Примерный дизайн: Поля для ввода отзыва и кнопка отправки. Основные функции: валидация данных, отправка формы.')">Choose</button>
+            </div>
+            <div class="app" id="memory_game">
+                <h3>Memory Training Game</h3>
+                <button onclick="showModal('Memory Training Game', 'Игра для тренировки памяти, где нужно найти пары одинаковых карточек. Примерный дизайн: Карточки с изображениями, которые переворачиваются. Основные функции: нахождение пар, подсчет очков.')">Choose</button>
+            </div>
+            <div class="app" id="quote_reader">
+                <h3>Quote Reader Application</h3>
+                <button onclick="showModal('Quote Reader Application', 'Приложение для чтения случайных цитат с возможностью добавления своих. Примерный дизайн: Поле для вывода цитаты и кнопка для добавления новой. Основные функции: просмотр случайной цитаты, добавление своей.')">Choose</button>
+            </div>
+            <div class="app" id="joke_generator">
+                <h3>Random Joke Generator</h3>
+                <button onclick="showModal('Random Joke Generator', 'Приложение для получения случайных шуток из API с возможностью отметки понравившихся. Примерный дизайн: Поле для вывода шутки и кнопка для генерации новой. Основные функции: генерация случайных шуток, отметка понравившихся.')">Choose</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmation" class="confirmation">
+        <p>You have successfully chosen an application!</p>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDescription"></p>
+        </div>
+    </div>
+
+    <div id="criteriaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCriteriaModal()">&times;</span>
+            <h2>Критерии оценивания (12-балльная шкала):</h2>
+            <p><strong>Полнота проекта (4 балла):</strong><br>
+            Проект должен полностью решать поставленную задачу. Если проект не завершен или решает задачу лишь частично, это снижает баллы.</p>
+            <p><strong>Качество кода (3 балла):</strong><br>
+            Качество и структура кода: чистота, использование функций и методов, адекватные комментарии. Если код неструктурирован, это снижает оценку.</p>
+            <p><strong>Асинхронность и работа с API (2 балла):</strong><br>
+            Использование fetch, async/await и грамотная работа с API. Ошибки в работе с API и некорректная обработка запросов снижают оценку.</p>
+            <p><strong>Работа с DOM (2 балла):</strong><br>
+            Интерактивность страницы: работа с DOM-элементами, обработка событий и динамическое обновление данных на странице.</p>
+            <p><strong>Креативность и интерфейс (1 балл):</strong><br>
+            Если проект реализован с добавлением оригинальных идей или интересных интерфейсных решений, это будет плюсом.</p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+       
+            $("#modal").hide();
+            $("#criteriaModal").hide();
+        });
+
+        function showSuccess(appName) {
+            $("#confirmation").text(`You have successfully chosen ${appName}!`).fadeIn(500).delay(1500).fadeOut(500);
+        }
+
+        function showModal(title, description) {
+            $("#modalTitle").text(title);
+            $("#modalDescription").text(description);
+            $("#modal").fadeIn(300);
+        }
+
+        function closeModal() {
+            $("#modal").fadeOut(300);
+        }
+
+        function showCriteriaModal() {
+            $("#criteriaModal").fadeIn(300);
+        }
+
+        function closeCriteriaModal() {
+            $("#criteriaModal").fadeOut(300);
+        }
+    </script>
+</body>
+</html>
